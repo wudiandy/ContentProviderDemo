@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wudiandy.contentproviderdemo">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--和声明Activity一样，你需要在AndroidManifest.xml中声明ContentProvider。-->
+        <!--在这里注册完之后，Android系统就会知道有这样一个ContentProvider存在。-->
+        <!--只有Android系统知道有这样一个ContentProvider存在，它才能让其他应用通过ContentResolver访问到这个ContentProvider。-->
+        <!--ContentResolver根据ContentProvider的权限（authorities）来识别不同的ContentProvider。-->
+        <!--我们通常使用ContentProvider所在Package名作为authorities的值。-->
+        <!--export（输出）为true时，这个ContentProvider可以被其他应用访问。为false时，不能被其他应用访问。-->
+        <provider
+            android:authorities="com.wudiandy.contentproviderdemo"
+            android:name="com.wudiandy.contentproviderdemo.StudentsInformationProvider"
+            android:exported="true"/>
+    </application>
+
+</manifest>

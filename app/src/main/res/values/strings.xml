@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ContentProviderDemo</string>
+    <string name="name">姓名：</string>
+    <string name="age">年龄：</string>
+    <string name="save">保存</string>
+    <string name="school_name">学校名称：</string>
+</resources>
