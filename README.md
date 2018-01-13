@@ -1,0 +1,2 @@
+# ContentProviderDemo
+这个demo app主要用来说明如何使用ContentProvider来分享自己的数据给其他app.
