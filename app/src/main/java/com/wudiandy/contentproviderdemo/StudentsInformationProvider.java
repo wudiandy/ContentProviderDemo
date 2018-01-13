@@ -48,19 +48,31 @@ public class StudentsInformationProvider extends ContentProvider {
         // 首先的一个问题，就是我们如何获取到数据库对象
         // 因为我们需要向数据库写入数据，所以我们通过DBHelper的getWritableDatabase方法来取得数据库对象。
         final SQLiteDatabase sqLiteDatabase = mDBHelper.getWritableDatabase();
-        long id = sqLiteDatabase.insert("Student", null, contentValues);
-        // 如果插入操作成功，则insert方法返回被插入位置的id，如果失败，则返回-1
-        // 一般的，我们要验证insert方法的返回值，从而知道插入操作是否成功。
-        Uri returnUri;
-        if (id > 0) {
-            // 在id大于0的情况下,我们需要返回一个URI
-            // 那么问题来了,我们如何生成一个URI呢?
-            // 我们先使用一些比较基础的方法
-            
-        } else {
-            throw new SQLException("向" + uri + "中的插入操作失败.");
-        }
-        return null;
+
+        // 获得了数据库对象之后,我们遇到了下一个问题,那就是解析参数
+        // 我们希望通过解析参数来知道ContentProvider的用户想要把什么样的数据插入到哪个表里
+        // 我们知道uri中有我们需要的表名.contentValues中存储着需要插入数据表的数据.
+        // 数据我们可以直接传给sqLiteDatabase.insert方法.剩下的工作就是从uri中解析出数据表名.
+        // 下面我们先用比较基本,原始的方法来解析.
+        // --------------------------------
+        // 我们用斜杠("/")把uri字符串分隔成5部分,其中strings[3]这一部分就是我们需要的,也就是数据表的名字
+        // content://<authorities>/<path>
+        //    |    |        |         |
+        //    |    |        |         |
+        //    V    V        V         V
+        //    0    1        2         3
+        String uriString = uri.toString();
+        String[] strings = uriString.split("/");
+        String tableName = strings[3];
+
+        long id = sqLiteDatabase.insert(tableName, null, contentValues);
+
+        // 插入完成之后,方法会返回被插入行的id.
+        // 按照这个insert函数的实现惯例,我们要把这个id添加到uri之后形成如下形式的新的uri
+        // content://<authorities>/<path>/<rowID>
+        // 然后把这个uri返回.
+        String newUriString = uriString + "/" + id;
+        return Uri.parse(newUriString);
     }
 
     @Override
